@@ -1,4 +1,9 @@
-const houses = [
+type housesType = {
+  id: number;
+  address: string;
+  type: string;
+};
+export const houses: housesType[] = [
   {
     id: 1,
     address: "211 Greenrose St. Hopkinsville, KY 42240",
@@ -15,7 +20,7 @@ const houses = [
     type: "flat",
   },
 ];
-const residents = [
+export const residents = [
   {
     id: 1,
     name: "Rory",
@@ -78,6 +83,6 @@ const residents = [
     name: "Frank",
     age: 33,
     gender: "male",
-    houseId: 1,
+    houseId: 3,
   },
 ];
