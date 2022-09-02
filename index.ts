@@ -1,6 +1,7 @@
 import express from "express";
 import { houses, residents } from "./data";
 const app = express();
+app.use(express.json());
 const port = 5000;
 
 app.get("/", (req, res) => {
@@ -14,15 +15,10 @@ app.get("/", (req, res) => {
 });
 
 app.get("/houses", (req, res) => {
-  // let dogsToSend = dogs.map(dog => {
-  //   let owner = owners.find(owner => owner.id === dog.ownerId)
-  //   return { ...dog, owner }
-  // })
   let housesToSend = houses.map((house) => {
     let foundResidents = residents.filter(
       (resident) => resident.houseId === house.id
     );
-    console.log(foundResidents);
     return { ...house, residents: foundResidents };
   });
 
@@ -35,8 +31,28 @@ app.get("/residents", (req, res) => {
   });
   res.send(residentsToSend);
 });
+app.post("/houses", (req, res) => {
+  let errors: string[] = [];
+  console.log(req.body.address);
+  if (typeof req.body.address !== "string") {
+    errors.push("address not given or not a string");
+  }
+  if (typeof req.body.type !== "string") {
+    errors.push("type not given or not a string");
+  }
+  if (errors.length === 0) {
+    const newHouse = {
+      id: houses.length === 0 ? 1 : houses[houses.length - 1].id + 1,
+      address: req.body.address,
+      type: req.body.type,
+    };
+    houses.push(newHouse);
+    res.send(newHouse);
+  } else {
+    res.status(400).send({ errors });
+  }
+});
 
 app.listen(port, () => {
   console.log(`App listenin on port ${port}`);
 });
-// Let's see if the node_modules shows up on github
