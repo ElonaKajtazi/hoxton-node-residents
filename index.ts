@@ -1,5 +1,5 @@
 import express from "express";
-import { houses, residents} from "./data";
+import { houses, residents } from "./data";
 const app = express();
 const port = 5000;
 
@@ -22,14 +22,18 @@ app.get("/houses", (req, res) => {
     let foundResidents = residents.filter(
       (resident) => resident.houseId === house.id
     );
-    console.log(foundResidents)
-    return { ...house, houseResidents: foundResidents };
+    console.log(foundResidents);
+    return { ...house, residents: foundResidents };
   });
 
   res.send(housesToSend);
 });
 app.get("/residents", (req, res) => {
-  res.send(residents);
+  let residentsToSend = residents.map((resident) => {
+    const foundHouse = houses.find((house) => house.id === resident.houseId);
+    return { ...resident, house: foundHouse };
+  });
+  res.send(residentsToSend);
 });
 
 app.listen(port, () => {
