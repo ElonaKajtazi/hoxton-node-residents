@@ -120,6 +120,29 @@ app.patch("/residents/:id", (req, res) => {
     res.status(404).send({ error: "Resident not found" });
   }
 });
+
+app.delete("/houses/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const indexToDelete = houses.findIndex((house) => house.id === id);
+  if (indexToDelete > -1) {
+    houses.splice(indexToDelete, 1);
+    res.send({ message: "House deleted successfully" });
+  } else {
+    res.status(404).send({ error: "House not found" });
+  }
+});
+
+app.delete("/residents/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const indexToDelete = residents.findIndex((resident) => resident.id === id);
+
+  if (indexToDelete > -1) {
+    residents.splice(indexToDelete, 1);
+    res.send({ message: "Resident deleted successfully" });
+  } else {
+    res.status(404).send({ error: "Resident not found" });
+  }
+});
 app.listen(port, () => {
   console.log(`App listenin on port ${port}`);
 });
